@@ -32,7 +32,7 @@ model = Model(inputs = model.inputs, outputs = model.layers[-2].output)
 
 def extract_features(file, model):
     file = "/home/user/Desktop/ML/flower_images/flower_images/" + file
-    img = load_img(file, target_size = (224,224))
+    img = load_img(file, target_size = (224, 224))
     img = np.array(img)
     reshaped_img = img.reshape(1, 224, 224, 3)
     imgx = preprocess_input(reshaped_img)
@@ -80,7 +80,7 @@ for file, cluster in zip(filenames,kmeans.labels_):
         groups[cluster].append(file)
       
 def view_cluster(cluster):
-    plt.figure(figsize = (25,25));
+    plt.figure(figsize = (25, 25));
     files = groups[cluster]
     if len(files) > 30:
         print("Clipping cluster size from", {len(files)}, "to 30")
@@ -89,7 +89,7 @@ def view_cluster(cluster):
     for index, file in enumerate(files):
         file = "/home/user/Desktop/ML/flower_images/flower_images/" + file
 
-        plt.subplot(10, 10, index+1);
+        plt.subplot(10, 10, index + 1);
         img = load_img(file)
         img = np.array(img)
         plt.imshow(img)
