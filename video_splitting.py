@@ -21,12 +21,6 @@ kmeans = KMeans(n_clusters = 5, random_state = 42)
 video_path = "video.mp4"
 cap = cv2.VideoCapture(video_path)
 
-if(cap):
-    print("$$$")
-else:
-    print("Nop")
-    exit(0)
-
 frames = []
 frame_indices = []
 while cap.isOpened():
@@ -44,7 +38,7 @@ for frame in frames:
 features = np.array(features)
 
 # Reduce dimensionality using PCA
-pca = PCA(n_components=100, random_state=22)
+pca = PCA(n_components = 100, random_state = 22)
 features_pca = pca.fit_transform(features)
 
 # Cluster the features
