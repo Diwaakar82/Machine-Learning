@@ -15,10 +15,10 @@ def extract_features(frame, model):
 model = VGG16(weights = 'imagenet', include_top = False)
 
 # Initialize KMeans clustering
-kmeans = KMeans(n_clusters = 5, random_state = 42)
+kmeans = KMeans(n_clusters = 2, random_state = 42)
 
 # Read the video
-video_path = "video.mp4"
+video_path = "video - MERGE.mp4"
 cap = cv2.VideoCapture(video_path)
 
 frames = []
@@ -60,7 +60,7 @@ for scene_id in sorted(scenes.keys()):
         if not ret:
             break
         cv2.imshow(f"Scene {scene_id + 1}", frame)
-        cv2.waitKey(50)  # Adjust the delay as needed
+        cv2.waitKey(25)  # Adjust the delay as needed
     cv2.destroyWindow(f"Scene {scene_id + 1}")
 
 cap.release()

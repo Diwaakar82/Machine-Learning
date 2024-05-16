@@ -63,13 +63,13 @@ label = df['label'].tolist()
 unique_labels = list(set(label))
 
 # reduce the amount of dimensions in the feature vector
-pca = PCA(n_components = 100, random_state = 22)
-pca.fit(feat)
-x = pca.transform(feat)
+# pca = PCA(n_components = 100, random_state = 22)
+# pca.fit(feat)
+# x = pca.transform(feat)
 
 # cluster feature vectors
 kmeans = KMeans(n_clusters = len(unique_labels), random_state = 22)
-kmeans.fit(x)
+kmeans.fit(feat)
 
 groups = {}
 for file, cluster in zip(filenames,kmeans.labels_):
@@ -99,3 +99,37 @@ for cluster_id in groups:
     view_cluster(cluster_id)
 
 plt.show()
+
+# Load the labels from the CSV file
+true_labels = df['label'].tolist()
+
+# Associate each filename with its corresponding label
+filename_to_label = dict(zip(filenames, true_labels))
+
+# Determine the most frequent label for each cluster
+cluster_to_label = {}
+for cluster_id, files in groups.items():
+    labels_in_cluster = [filename_to_label[file] for file in files]
+    most_common_label = max(set(labels_in_cluster), key=labels_in_cluster.count)
+    cluster_to_label[cluster_id] = most_common_label
+
+# Create a dictionary mapping each label to its corresponding cluster
+label_to_cluster = {label: cluster for cluster, label in cluster_to_label.items()}
+
+# Check if files with the same label belong to the same cluster according to both predicted and true labels
+correct = 0
+total = 0
+
+for label in unique_labels:
+    # Get filenames with the current label
+    label_files = [file for file, lbl in zip(filenames, true_labels) if lbl == label]
+    
+    # Check if all files with the same label belong to the same cluster according to both predicted and true labels
+    if len(set(label_to_cluster[label_files[0]] for file in label_files)) == 1:
+        correct += 1
+    
+    total += 1
+
+# Calculate accuracy
+accuracy = correct / total
+print("Accuracy based on files with the same label belonging to the same cluster:", accuracy)
