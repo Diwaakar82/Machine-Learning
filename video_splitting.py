@@ -51,17 +51,43 @@ for i, label in enumerate(kmeans.labels_):
         scenes[label] = []
     scenes[label].append(frame_indices[i])  # Use frame indices instead of index
 
-# Display frames from each scene in order
+# Create output directory
+output_dir = 'video_clips'
+os.makedirs(output_dir, exist_ok=True)
+
+# Save frames from each scene into separate video clips
+fps = cap.get(cv2.CAP_PROP_FPS)
+frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
 for scene_id in sorted(scenes.keys()):
-    print(f"Scene {scene_id + 1}:")
+    print(f"Saving Scene {scene_id + 1}...")
+    output_path = os.path.join(output_dir, f'scene_{scene_id + 1}.mp4')
+    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (frame_width, frame_height))
+
     for index in scenes[scene_id]:
         cap.set(cv2.CAP_PROP_POS_FRAMES, index - 1)  # Set the frame position
         ret, frame = cap.read()
         if not ret:
             break
-        cv2.imshow(f"Scene {scene_id + 1}", frame)
-        cv2.waitKey(25)  # Adjust the delay as needed
-    cv2.destroyWindow(f"Scene {scene_id + 1}")
+        out.write(frame)
+
+    out.release()
 
 cap.release()
-cv2.destroyAllWindows()
+print("Video clips saved successfully.")
+
+# # Display frames from each scene in order
+# for scene_id in sorted(scenes.keys()):
+#     print(f"Scene {scene_id + 1}:")
+#     for index in scenes[scene_id]:
+#         cap.set(cv2.CAP_PROP_POS_FRAMES, index - 1)  # Set the frame position
+#         ret, frame = cap.read()
+#         if not ret:
+#             break
+#         cv2.imshow(f"Scene {scene_id + 1}", frame)
+#         cv2.waitKey(25)  # Adjust the delay as needed
+#     cv2.destroyWindow(f"Scene {scene_id + 1}")
+
+# cap.release()
+# cv2.destroyAllWindows()
