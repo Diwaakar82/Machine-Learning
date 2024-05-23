@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from keras.applications.vgg16 import VGG16 
+import os;
 
 # Function to extract features from a frame
 def extract_features(frame, model):
@@ -86,7 +87,7 @@ print("Video clips saved successfully.")
 #         if not ret:
 #             break
 #         cv2.imshow(f"Scene {scene_id + 1}", frame)
-#         cv2.waitKey(25)  # Adjust the delay as needed
+#         cv2.waitKey(25)  # Adjust the delay as nee ded
 #     cv2.destroyWindow(f"Scene {scene_id + 1}")
 
 # cap.release()
